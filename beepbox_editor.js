@@ -559,7 +559,7 @@ var beepbox = (function (exports) {
         }
     }
     EditorConfig.version = "2.3";
-    EditorConfig.versionDisplayName = "JummBox " + EditorConfig.version;
+    EditorConfig.versionDisplayName = "GoldBox " + EditorConfig.version;
     EditorConfig.presetCategories = toNameMap([
         {
             name: "Custom Instruments",
@@ -3515,7 +3515,7 @@ li.select2-results__option[role=group] > strong:hover {
 		margin-left: 10px;
 	}
 	.beepboxEditor .settings-area {
-		width: 14em;
+		width: 15em;
 	}
 }
 
