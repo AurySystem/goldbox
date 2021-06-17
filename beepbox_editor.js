@@ -245,10 +245,10 @@ var beepbox = (function (exports) {
         { name: "wibble 1", type: 9, speed: 24.0 },
         { name: "wibble 2", type: 9, speed: 12.0 },
         { name: "wibble 3", type: 9, speed: 4.0 },
-        { name: "linear 1", type: 11, speed: 12.0 },
-        { name: "linear 2", type: 11, speed: 4.0 },
-        { name: "linear 3", type: 11, speed: 1.0 },
-        { name: "hard", type: 10, speed: 6.0 },
+        { name: "linear 1", type: 11, speed: 32.0 },
+        { name: "linear 2", type: 11, speed: 8.0 },
+        { name: "linear 3", type: 11, speed: 2.0 },
+        { name: "linear-1", type: 11, speed: 128.0 },
     ]);
     Config.feedbacks = toNameMap([
         { name: "1⟲", indices: [[1], [], [], []] },
@@ -10412,6 +10412,13 @@ const operator#Scaled   = operator#OutputMult * operator#Output;
                     { item: "decay 1", weight: 4 },
                     { item: "decay 2", weight: 4 },
                     { item: "decay 3", weight: 4 },
+                    { item: "wibble 1", weight: 2 },
+                    { item: "wibble 2", weight: 2 },
+                    { item: "wibble 3", weight: 2 },
+                    { item: "linear 1", weight: 2 },
+                    { item: "linear 2", weight: 2 },
+                    { item: "linear 3", weight: 2 },
+                    { item: "linear-1", weight: 1 },
                 ])].index;
                 instrument.transition = Config.transitions.dictionary[selectWeightedRandom([
                     { item: "seamless", weight: 1 },
@@ -10422,6 +10429,7 @@ const operator#Scaled   = operator#OutputMult * operator#Output;
                     { item: "hard fade", weight: 8 },
                     { item: "medium fade", weight: 2 },
                     { item: "soft fade", weight: 1 },
+                    { item: "sliding fade", weight: 1 },
                 ])].index;
                 instrument.effects = Config.effectsNames.indexOf(selectWeightedRandom([
                     { item: "none", weight: 1 },
@@ -10521,6 +10529,13 @@ const operator#Scaled   = operator#OutputMult * operator#Output;
                     { item: "decay 1", weight: 1 },
                     { item: "decay 2", weight: 2 },
                     { item: "decay 3", weight: 2 },
+                    { item: "wibble 1", weight: 4 },
+                    { item: "wibble 2", weight: 4 },
+                    { item: "wibble 3", weight: 4 },
+                    { item: "linear 1", weight: 2 },
+                    { item: "linear 2", weight: 2 },
+                    { item: "linear 3", weight: 2 },
+                    { item: "linear-1", weight: 1 },
                 ])].index;
                 instrument.transition = Config.transitions.dictionary[selectWeightedRandom([
                     { item: "seamless", weight: 1 },
@@ -10531,6 +10546,7 @@ const operator#Scaled   = operator#OutputMult * operator#Output;
                     { item: "hard fade", weight: 4 },
                     { item: "medium fade", weight: 2 },
                     { item: "soft fade", weight: 2 },
+                    { item: "sliding fade", weight: 2 },
                 ])].index;
                 instrument.effects = Config.effectsNames.indexOf(selectWeightedRandom([
                     { item: "none", weight: 1 },
@@ -10563,6 +10579,7 @@ const operator#Scaled   = operator#OutputMult * operator#Output;
                         { item: "octave", weight: 2 },
                         { item: "bowed", weight: 2 },
                         { item: "piano", weight: 5 },
+                        { item: "warbled", weight: 5 },
                     ])].index;
                 }
                 function normalize(harmonics) {
@@ -10604,6 +10621,13 @@ const operator#Scaled   = operator#OutputMult * operator#Output;
                                 { item: "decay 1", weight: 2 },
                                 { item: "decay 2", weight: 2 },
                                 { item: "decay 3", weight: 2 },
+                                { item: "wibble 1", weight: 2 },
+                                { item: "wibble 2", weight: 2 },
+                                { item: "wibble 3", weight: 2 },
+                                { item: "linear 1", weight: 2 },
+                                { item: "linear 2", weight: 2 },
+                                { item: "linear 3", weight: 2 },
+                                { item: "linear-1", weight: 1 },
                             ])].index;
                             instrument.pulseWidth = selectCurvedDistribution(0, Config.pulseWidthRange - 1, Config.pulseWidthRange - 1, 2);
                         }
@@ -10675,6 +10699,12 @@ const operator#Scaled   = operator#OutputMult * operator#Output;
                                 instrument.operators[i].frequency = selectCurvedDistribution(0, Config.operatorFrequencies.length - 1, 0, 3);
                                 instrument.operators[i].amplitude = selectCurvedDistribution(0, Config.operatorAmplitudeMax, Config.operatorAmplitudeMax - 1, 2);
                                 instrument.operators[i].envelope = Config.envelopes.dictionary["custom"].index;
+                                instrument.operators[i].waveform = Config.operatorWaves.dictionary[selectWeightedRandom([
+                                    { item: "sine", weight: 4 },
+                                    { item: "triangle", weight: 6 },
+                                    { item: "sawtooth", weight: 2 },
+                                    { item: "square", weight: 6 },
+                                ])].index;
                             }
                             for (let i = algorithm.carrierCount; i < Config.operatorCount; i++) {
                                 instrument.operators[i].frequency = selectCurvedDistribution(3, Config.operatorFrequencies.length - 1, 0, 3);
@@ -10700,6 +10730,19 @@ const operator#Scaled   = operator#OutputMult * operator#Output;
                                     { item: "decay 1", weight: 1 },
                                     { item: "decay 2", weight: 1 },
                                     { item: "decay 3", weight: 1 },
+                                    { item: "wibble 1", weight: 2 },
+                                    { item: "wibble 2", weight: 2 },
+                                    { item: "wibble 3", weight: 2 },
+                                    { item: "linear 1", weight: 2 },
+                                    { item: "linear 2", weight: 2 },
+                                    { item: "linear 3", weight: 2 },
+                                    { item: "linear-1", weight: 1 },
+                                ])].index;
+                                instrument.operators[i].waveform = Config.operatorWaves.dictionary[selectWeightedRandom([
+                                    { item: "sine", weight: 4 },
+                                    { item: "triangle", weight: 6 },
+                                    { item: "sawtooth", weight: 2 },
+                                    { item: "square", weight: 4 },
                                 ])].index;
                             }
                             instrument.feedbackAmplitude = (Math.pow(Math.random(), 3) * Config.operatorAmplitudeMax) | 0;
@@ -10724,6 +10767,13 @@ const operator#Scaled   = operator#OutputMult * operator#Output;
                                 { item: "decay 1", weight: 1 },
                                 { item: "decay 2", weight: 1 },
                                 { item: "decay 3", weight: 1 },
+                                { item: "wibble 1", weight: 2 },
+                                { item: "wibble 2", weight: 2 },
+                                { item: "wibble 3", weight: 2 },
+                                { item: "linear 1", weight: 2 },
+                                { item: "linear 2", weight: 2 },
+                                { item: "linear 3", weight: 2 },
+                                { item: "linear-1", weight: 1 },
                             ])].index;
                         }
                         break;

@@ -245,10 +245,10 @@ var beepbox = (function (exports) {
         { name: "wibble 1", type: 9, speed: 24.0 },
         { name: "wibble 2", type: 9, speed: 12.0 },
         { name: "wibble 3", type: 9, speed: 4.0 },
-        { name: "linear 1", type: 11, speed: 12.0 },
-        { name: "linear 2", type: 11, speed: 4.0 },
-        { name: "linear 3", type: 11, speed: 1.0 },
-        { name: "hard", type: 10, speed: 6.0 },
+        { name: "linear 1", type: 11, speed: 32.0 },
+        { name: "linear 2", type: 11, speed: 8.0 },
+        { name: "linear 3", type: 11, speed: 2.0 },
+        { name: "linear-1", type: 11, speed: 128.0 },
     ]);
     Config.feedbacks = toNameMap([
         { name: "1⟲", indices: [[1], [], [], []] },
