@@ -249,6 +249,7 @@ var beepbox = (function (exports) {
         { name: "linear 2", type: 11, speed: 8.0 },
         { name: "linear 3", type: 11, speed: 2.0 },
         { name: "linear-1", type: 11, speed: 128.0 },
+        { name: "swell -1", type: 5, speed: 128.0 },
     ]);
     Config.feedbacks = toNameMap([
         { name: "1⟲", indices: [[1], [], [], []] },
@@ -310,6 +311,10 @@ var beepbox = (function (exports) {
         { name: "triangle", samples: generateTriWave() },
         { name: "sawtooth", samples: generateSawWave() },
         { name: "square", samples: generateSquareWave() },
+        { name: "25%pulse", samples: generateSquareWave(0.5) },
+        { name: "75%pulse", samples: generateSquareWave(-0.5) },
+        { name: "ramp", samples: generateSawWave(true) },
+        { name: "trapezoid", samples: generateTrapezoidWave(2) },
     ]);
     Config.barEditorHeight = 10;
     function centerWave(wave) {
@@ -486,18 +491,28 @@ var beepbox = (function (exports) {
         }
         return wave;
     }
-    function generateSquareWave() {
+    function generateTrapezoidWave(drive = 2) {
         const wave = new Float64Array(Config.sineWaveLength + 1);
         for (let i = 0; i < Config.sineWaveLength + 1; i++) {
-            wave[i] = Math.sin(i * Math.PI * 2.0 / Config.sineWaveLength);
-            wave[i] = wave[i] > 0 ? 1.0 : -1.0;
+            wave[i] = Math.asin(Math.sin(i * Math.PI * 2.0 / Config.sineWaveLength)) * drive;
+            wave[i] = wave[i] >= 1 ? 1 : wave[i];
+            wave[i] = wave[i] <= -1 ? -1 : wave[i];
         }
         return wave;
     }
-    function generateSawWave() {
+    function generateSquareWave(phasewidth = 0) {
+        const wave = new Float64Array(Config.sineWaveLength + 1);
+        for (let i = 0; i < Config.sineWaveLength + 1; i++) {
+            wave[i] = Math.sin(i * Math.PI * 2.0 / Config.sineWaveLength);
+            wave[i] = wave[i] > phasewidth ? 1.0 : -1.0;
+        }
+        return wave;
+    }
+    function generateSawWave(inverse = false) {
         const wave = new Float64Array(Config.sineWaveLength + 1);
         for (let i = 0; i < Config.sineWaveLength + 1; i++) {
             wave[i] = ((i - (Config.sineWaveLength * 0.75) + Config.sineWaveLength) * 2.0 / Config.sineWaveLength) % 2 - 1;
+            wave[i] = inverse ? wave[i] * -1 : wave[i];
         }
         return wave;
     }
@@ -10702,8 +10717,12 @@ const operator#Scaled   = operator#OutputMult * operator#Output;
                                 instrument.operators[i].waveform = Config.operatorWaves.dictionary[selectWeightedRandom([
                                     { item: "sine", weight: 4 },
                                     { item: "triangle", weight: 6 },
-                                    { item: "sawtooth", weight: 2 },
+                                    { item: "sawtooth", weight: 3 },
                                     { item: "square", weight: 6 },
+                                    { item: "25%pulse", weight: 4 },
+                                    { item: "75%pulse", weight: 4 },
+                                    { item: "ramp", weight: 3 },
+                                    { item: "trapezoid", weight: 4 },
                                 ])].index;
                             }
                             for (let i = algorithm.carrierCount; i < Config.operatorCount; i++) {
@@ -10741,8 +10760,12 @@ const operator#Scaled   = operator#OutputMult * operator#Output;
                                 instrument.operators[i].waveform = Config.operatorWaves.dictionary[selectWeightedRandom([
                                     { item: "sine", weight: 4 },
                                     { item: "triangle", weight: 6 },
-                                    { item: "sawtooth", weight: 2 },
+                                    { item: "sawtooth", weight: 4 },
                                     { item: "square", weight: 4 },
+                                    { item: "25%pulse", weight: 4 },
+                                    { item: "75%pulse", weight: 4 },
+                                    { item: "ramp", weight: 4 },
+                                    { item: "trapezoid", weight: 6 },
                                 ])].index;
                             }
                             instrument.feedbackAmplitude = (Math.pow(Math.random(), 3) * Config.operatorAmplitudeMax) | 0;
