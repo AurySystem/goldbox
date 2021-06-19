@@ -2254,6 +2254,7 @@ var beepbox = (function (exports) {
     }
     class Song {
         constructor(string) {
+            this.scaleCustom = [];
             this.channels = [];
             this.limitDecay = 4.0;
             this.limitRise = 4000.0;
@@ -2455,6 +2456,7 @@ var beepbox = (function (exports) {
         }
         initToDefault(andResetChannels = true) {
             this.scale = 0;
+            this.scaleCustom = [true, false, true, true, false, false, false, true, true, false, true, true];
             this.key = 0;
             this.loopStart = 0;
             this.loopLength = 4;
@@ -2516,6 +2518,11 @@ var beepbox = (function (exports) {
             }
             buffer.push(110, base64IntToCharCode[this.pitchChannelCount], base64IntToCharCode[this.noiseChannelCount], base64IntToCharCode[this.modChannelCount]);
             buffer.push(115, base64IntToCharCode[this.scale]);
+            if (this.scale == Config.scales["dictionary"]["Custom"].index) {
+                for (var i = 1; i < Config.pitchesPerOctave; i++) {
+                    buffer.push(base64IntToCharCode[this.scaleCustom[i] ? 1 : 0]);
+                }
+            }
             buffer.push(107, base64IntToCharCode[this.key]);
             buffer.push(108, base64IntToCharCode[this.loopStart >> 6], base64IntToCharCode[this.loopStart & 0x3f]);
             buffer.push(101, base64IntToCharCode[(this.loopLength - 1) >> 6], base64IntToCharCode[(this.loopLength - 1) & 0x3f]);
@@ -2987,6 +2994,11 @@ var beepbox = (function (exports) {
                     case 115:
                         {
                             this.scale = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
+                            if (this.scale == Config.scales["dictionary"]["Custom"].index) {
+                                for (var i = 1; i < Config.pitchesPerOctave; i++) {
+                                    this.scaleCustom[i] = base64CharCodeToInt[compressed.charCodeAt(charIndex++)] == 1;
+                                }
+                            }
                             if (variant == "beepbox")
                                 this.scale = 0;
                         }
@@ -3933,6 +3945,7 @@ var beepbox = (function (exports) {
                 "format": Song._format,
                 "version": Song._latestJummBoxVersion,
                 "scale": Config.scales[this.scale].name,
+                "customScale": this.scaleCustom,
                 "key": Config.keys[this.key].name,
                 "introBars": this.loopStart,
                 "loopBars": this.loopLength,
@@ -3961,6 +3974,13 @@ var beepbox = (function (exports) {
                 const scale = Config.scales.findIndex(scale => scale.name == scaleName);
                 if (scale != -1)
                     this.scale = scale;
+                if (this.scale == Config.scales["dictionary"]["Custom"].index) {
+                    if (jsonObject["customScale"] != undefined) {
+                        for (var i of jsonObject["customScale"].keys()) {
+                            this.scaleCustom[i] = jsonObject["customScale"][i];
+                        }
+                    }
+                }
             }
             if (jsonObject["key"] != undefined) {
                 if (typeof (jsonObject["key"]) == "number") {
