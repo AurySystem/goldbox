@@ -111,6 +111,7 @@ var beepbox = (function (exports) {
         { name: "organ", volume: 0.2, samples: centerAndNormalizeWave([11.0, 10.0, 12.0, 11.0, 14.0, 7.0, 5.0, 5.0, 12.0, 10.0, 10.0, 9.0, 12.0, 6.0, 4.0, 5.0, 13.0, 12.0, 12.0, 10.0, 12.0, 5.0, 2.0, 2.0, 8.0, 6.0, 6.0, 5.0, 8.0, 3.0, 2.0, 1.0]) },
         { name: "pan flute", volume: 0.35, samples: centerAndNormalizeWave([1.0, 4.0, 7.0, 6.0, 7.0, 9.0, 7.0, 7.0, 11.0, 12.0, 13.0, 15.0, 13.0, 11.0, 11.0, 12.0, 13.0, 10.0, 7.0, 5.0, 3.0, 6.0, 10.0, 7.0, 3.0, 3.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0]) },
         { name: "glitch", volume: 0.5, samples: centerWave([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0, -1.0]) },
+        { name: "trapezoid", volume: 1.0, samples: centerWave([1.0 / 15.0, 6.0 / 15.0, 10.0 / 15.0, 14.0 / 15.0, 15.0 / 15.0, 15.0 / 15.0, 15.0 / 15.0, 15.0 / 15.0, 15.0 / 15.0, 15.0 / 15.0, 15.0 / 15.0, 15.0 / 15.0, 14.0 / 15.0, 10.0 / 15.0, 6.0 / 15.0, 1.0 / 15.0, -1.0 / 15.0, -6.0 / 15.0, -10.0 / 15.0, -14.0 / 15.0, -15.0 / 15.0, -15.0 / 15.0, -15.0 / 15.0, -15.0 / 15.0, -15.0 / 15.0, -15.0 / 15.0, -15.0 / 15.0, -15.0 / 15.0, -14.0 / 15.0, -10.0 / 15.0, -6.0 / 15.0, -1.0 / 15.0,]) },
     ]);
     Config.chipNoises = toNameMap([
         { name: "retro", volume: 0.25, basePitch: 69, pitchFilterMult: 1024.0, isSoft: false, samples: null },
@@ -197,6 +198,7 @@ var beepbox = (function (exports) {
         { name: "(1 2 3)←4", carrierCount: 3, associatedCarrier: [1, 2, 3, 3], modulatedBy: [[4], [4], [4], []] },
         { name: "1 2 3 4", carrierCount: 4, associatedCarrier: [1, 2, 3, 4], modulatedBy: [[], [], [], []] },
         { name: "1←(2 3) 2←4", carrierCount: 2, associatedCarrier: [1, 2, 1, 2], modulatedBy: [[2, 3], [4], [], []] },
+        { name: "(1←( 2←( 3)←4", carrierCount: 3, associatedCarrier: [1, 2, 3, 3], modulatedBy: [[2, 3, 4], [3, 4], [4], []] },
     ]);
     Config.operatorCarrierInterval = [0.0, 0.04, -0.073, 0.091];
     Config.operatorAmplitudeMax = 15;
@@ -224,32 +226,43 @@ var beepbox = (function (exports) {
         { name: "custom", type: 0, speed: 0.0 },
         { name: "steady", type: 1, speed: 0.0 },
         { name: "punch", type: 2, speed: 0.0 },
+        { name: "flare -1", type: 3, speed: 128.0 },
         { name: "flare 1", type: 3, speed: 32.0 },
         { name: "flare 2", type: 3, speed: 8.0 },
         { name: "flare 3", type: 3, speed: 2.0 },
+        { name: "twang -1", type: 4, speed: 128.0 },
         { name: "twang 1", type: 4, speed: 32.0 },
         { name: "twang 2", type: 4, speed: 8.0 },
         { name: "twang 3", type: 4, speed: 2.0 },
+        { name: "swell -1", type: 5, speed: 128.0 },
         { name: "swell 1", type: 5, speed: 32.0 },
         { name: "swell 2", type: 5, speed: 8.0 },
         { name: "swell 3", type: 5, speed: 2.0 },
+        { name: "tremolo0", type: 6, speed: 8.0 },
         { name: "tremolo1", type: 6, speed: 4.0 },
         { name: "tremolo2", type: 6, speed: 2.0 },
         { name: "tremolo3", type: 6, speed: 1.0 },
         { name: "tremolo4", type: 7, speed: 4.0 },
         { name: "tremolo5", type: 7, speed: 2.0 },
         { name: "tremolo6", type: 7, speed: 1.0 },
+        { name: "decay -1", type: 8, speed: 40.0 },
         { name: "decay 1", type: 8, speed: 10.0 },
         { name: "decay 2", type: 8, speed: 7.0 },
         { name: "decay 3", type: 8, speed: 4.0 },
+        { name: "wibble-1", type: 9, speed: 96.0 },
         { name: "wibble 1", type: 9, speed: 24.0 },
         { name: "wibble 2", type: 9, speed: 12.0 },
         { name: "wibble 3", type: 9, speed: 4.0 },
+        { name: "linear-2", type: 11, speed: 256.0 },
+        { name: "linear-1", type: 11, speed: 128.0 },
         { name: "linear 1", type: 11, speed: 32.0 },
         { name: "linear 2", type: 11, speed: 8.0 },
         { name: "linear 3", type: 11, speed: 2.0 },
-        { name: "linear-1", type: 11, speed: 128.0 },
-        { name: "swell -1", type: 5, speed: 128.0 },
+        { name: "rise -2", type: 12, speed: 256.0 },
+        { name: "rise -1", type: 12, speed: 128.0 },
+        { name: "rise 1", type: 12, speed: 32.0 },
+        { name: "rise 2", type: 12, speed: 8.0 },
+        { name: "rise 3", type: 12, speed: 2.0 },
     ]);
     Config.feedbacks = toNameMap([
         { name: "1⟲", indices: [[1], [], [], []] },
@@ -273,6 +286,7 @@ var beepbox = (function (exports) {
         { name: "1↔2 3↔4", indices: [[2], [1], [4], [3]] },
         { name: "1↔4 2↔3", indices: [[4], [3], [2], [1]] },
         { name: "2→1→4→3→2", indices: [[2], [3], [4], [1]] },
+        { name: "1→2→3→4→1", indices: [[4], [1], [2], [3]] },
     ]);
     Config.chipNoiseLength = 1 << 15;
     Config.spectrumBasePitch = 24;
@@ -573,7 +587,7 @@ var beepbox = (function (exports) {
             return null;
         }
     }
-    EditorConfig.version = "2.3";
+    EditorConfig.version = "2.1";
     EditorConfig.versionDisplayName = "GoldBox " + EditorConfig.version;
     EditorConfig.presetCategories = toNameMap([
         {
@@ -5278,7 +5292,7 @@ li.select2-results__option[role=group] > strong:hover {
             let bits;
             let buffer = [];
             buffer.push(Song._variant);
-            buffer.push(base64IntToCharCode[Song._latestJummBoxVersion]);
+            buffer.push(base64IntToCharCode[Song._latestGoldBoxVersion]);
             buffer.push(78);
             var encodedSongTitle = encodeURIComponent(this.title);
             buffer.push(base64IntToCharCode[encodedSongTitle.length >> 6], base64IntToCharCode[encodedSongTitle.length & 0x3f]);
@@ -5706,10 +5720,16 @@ li.select2-results__option[role=group] > strong:hover {
                 variant = "jummbox";
                 charIndex++;
             }
+            else if (variantTest == 0x67) {
+                variant = "goldbox";
+                charIndex++;
+            }
             const version = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
             if (variant == "beepbox" && (version == -1 || version > Song._latestBeepboxVersion || version < Song._oldestBeepboxVersion))
                 return;
             if (variant == "jummbox" && (version == -1 || version > Song._latestJummBoxVersion || version < Song._oldestJummBoxVersion))
+                return;
+            if (variant == "goldbox" && (version == -1 || version > Song._latestGoldBoxVersion || version < Song._oldestGoldBoxVersion))
                 return;
             const beforeTwo = version < 2;
             const beforeThree = version < 3;
@@ -5984,13 +6004,14 @@ li.select2-results__option[role=group] > strong:hover {
                             if (beforeSeven && variant == "beepbox") {
                                 const legacyToCutoff = [10, 6, 3, 0, 8, 5, 2];
                                 const legacyToEnvelope = [1, 1, 1, 1, 18, 19, 20];
+                                const pregoldToEnvelope = [0, 1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14, 16, 17, 18, 19, 20, 21, 23, 24, 25, 27, 28, 29, 32, 33, 34, 31, 11];
                                 const filterNames = ["none", "bright", "medium", "soft", "decay bright", "decay medium", "decay soft"];
                                 if (beforeThree && variant == "beepbox") {
                                     channel = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                     const instrument = this.channels[channel].instruments[0];
                                     const legacyFilter = [1, 3, 4, 5][clamp(0, filterNames.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)])];
                                     instrument.filterCutoff = legacyToCutoff[legacyFilter];
-                                    instrument.filterEnvelope = legacyToEnvelope[legacyFilter];
+                                    instrument.filterEnvelope = pregoldToEnvelope[legacyToEnvelope[legacyFilter]];
                                     instrument.filterResonance = 0;
                                 }
                                 else if (beforeSix && variant == "beepbox") {
@@ -6000,7 +6021,7 @@ li.select2-results__option[role=group] > strong:hover {
                                             const legacyFilter = clamp(0, filterNames.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)] + 1);
                                             if (channel < this.pitchChannelCount) {
                                                 instrument.filterCutoff = legacyToCutoff[legacyFilter];
-                                                instrument.filterEnvelope = legacyToEnvelope[legacyFilter];
+                                                instrument.filterEnvelope = pregoldToEnvelope[legacyToEnvelope[legacyFilter]];
                                                 instrument.filterResonance = 0;
                                             }
                                             else {
@@ -6015,7 +6036,7 @@ li.select2-results__option[role=group] > strong:hover {
                                     const legacyFilter = clamp(0, filterNames.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                     const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                                     instrument.filterCutoff = legacyToCutoff[legacyFilter];
-                                    instrument.filterEnvelope = legacyToEnvelope[legacyFilter];
+                                    instrument.filterEnvelope = pregoldToEnvelope[legacyToEnvelope[legacyFilter]];
                                     instrument.filterResonance = 0;
                                 }
                             }
@@ -6033,13 +6054,26 @@ li.select2-results__option[role=group] > strong:hover {
                     case 122:
                         {
                             const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
-                            if (instrument.type == 4) {
-                                for (let i = 0; i < Config.drumCount; i++) {
-                                    instrument.drumsetEnvelopes[i] = clamp(0, Config.envelopes.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                            if ((beforeTwo && variant == "goldbox") || variant != "goldbox") {
+                                const pregoldToEnvelope = [0, 1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14, 16, 17, 18, 19, 20, 21, 23, 24, 25, 27, 28, 29, 32, 33, 34, 31, 11];
+                                if (instrument.type == 4) {
+                                    for (let i = 0; i < Config.drumCount; i++) {
+                                        instrument.drumsetEnvelopes[i] = pregoldToEnvelope[clamp(0, pregoldToEnvelope.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)])];
+                                    }
+                                }
+                                else {
+                                    instrument.filterEnvelope = pregoldToEnvelope[clamp(0, pregoldToEnvelope.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)])];
                                 }
                             }
                             else {
-                                instrument.filterEnvelope = clamp(0, Config.envelopes.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                if (instrument.type == 4) {
+                                    for (let i = 0; i < Config.drumCount; i++) {
+                                        instrument.drumsetEnvelopes[i] = clamp(0, Config.envelopes.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                    }
+                                }
+                                else {
+                                    instrument.filterEnvelope = clamp(0, Config.envelopes.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                }
                             }
                         }
                         break;
@@ -6053,7 +6087,13 @@ li.select2-results__option[role=group] > strong:hover {
                             else {
                                 const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                                 instrument.pulseWidth = clamp(0, Config.pulseWidthRange + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
-                                instrument.pulseEnvelope = clamp(0, Config.envelopes.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                if ((beforeTwo && variant == "goldbox") || variant != "goldbox") {
+                                    const pregoldToEnvelope = [0, 1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14, 16, 17, 18, 19, 20, 21, 23, 24, 25, 27, 28, 29, 32, 33, 34, 31, 11];
+                                    instrument.pulseEnvelope = pregoldToEnvelope[clamp(0, Config.envelopes.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)])];
+                                }
+                                else {
+                                    instrument.pulseEnvelope = clamp(0, Config.envelopes.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                }
                             }
                         }
                         break;
@@ -6070,7 +6110,7 @@ li.select2-results__option[role=group] > strong:hover {
                                     }
                                 }
                             }
-                            else if (beforeFour || variant == "beepbox") {
+                            else if ((beforeFour && variant == "jummbox") || variant == "beepbox") {
                                 this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator].transition = clamp(0, Config.transitions.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                             }
                             else {
@@ -6085,37 +6125,40 @@ li.select2-results__option[role=group] > strong:hover {
                             if (beforeThree && variant == "beepbox") {
                                 const legacyEffects = [0, 3, 2, 0];
                                 const legacyEnvelopes = [1, 1, 1, 13];
+                                const pregoldToEnvelope = [0, 1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14, 16, 17, 18, 19, 20, 21, 23, 24, 25, 27, 28, 29, 32, 33, 34, 31, 11];
                                 const channel = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                 const effect = clamp(0, legacyEffects.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                 const instrument = this.channels[channel].instruments[0];
                                 instrument.vibrato = legacyEffects[effect];
-                                instrument.filterEnvelope = (instrument.filterEnvelope == 1)
+                                instrument.filterEnvelope = pregoldToEnvelope[(instrument.filterEnvelope == 1)
                                     ? legacyEnvelopes[effect]
-                                    : instrument.filterEnvelope;
+                                    : instrument.filterEnvelope];
                             }
                             else if (beforeSix && variant == "beepbox") {
                                 const legacyEffects = [0, 1, 2, 3, 0, 0];
                                 const legacyEnvelopes = [1, 1, 1, 1, 16, 13];
+                                const pregoldToEnvelope = [0, 1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14, 16, 17, 18, 19, 20, 21, 23, 24, 25, 27, 28, 29, 32, 33, 34, 31, 11];
                                 for (let channel = 0; channel < this.getChannelCount(); channel++) {
                                     for (let i = 0; i < this.instrumentsPerChannel; i++) {
                                         const effect = clamp(0, legacyEffects.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                         const instrument = this.channels[channel].instruments[i];
                                         instrument.vibrato = legacyEffects[effect];
-                                        instrument.filterEnvelope = (instrument.filterEnvelope == 1)
+                                        instrument.filterEnvelope = pregoldToEnvelope[(instrument.filterEnvelope == 1)
                                             ? legacyEnvelopes[effect]
-                                            : instrument.filterEnvelope;
+                                            : instrument.filterEnvelope];
                                     }
                                 }
                             }
                             else if (beforeSeven && variant == "beepbox") {
                                 const legacyEffects = [0, 1, 2, 3, 0, 0];
                                 const legacyEnvelopes = [1, 1, 1, 1, 16, 13];
+                                const pregoldToEnvelope = [0, 1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14, 16, 17, 18, 19, 20, 21, 23, 24, 25, 27, 28, 29, 32, 33, 34, 31, 11];
                                 const effect = clamp(0, legacyEffects.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                 const instrument = this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator];
                                 instrument.vibrato = legacyEffects[effect];
-                                instrument.filterEnvelope = (instrument.filterEnvelope == 1)
+                                instrument.filterEnvelope = pregoldToEnvelope[(instrument.filterEnvelope == 1)
                                     ? legacyEnvelopes[effect]
-                                    : instrument.filterEnvelope;
+                                    : instrument.filterEnvelope];
                             }
                             else {
                                 const vibrato = clamp(0, Config.vibratos.length + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
@@ -6224,7 +6267,7 @@ li.select2-results__option[role=group] > strong:hover {
                             else {
                                 instrument.pan = clamp(0, Config.panMax + 1, (base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                             }
-                            if (variant == "jummbox" && !beforeThree)
+                            if ((variant == "jummbox" && !beforeThree) || variant == "goldbox")
                                 instrument.panDelay = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                         }
                         break;
@@ -6284,7 +6327,7 @@ li.select2-results__option[role=group] > strong:hover {
                         {
                             for (let channel = 0; channel < this.getChannelCount(); channel++) {
                                 var channelNameLength;
-                                if (beforeFour)
+                                if (beforeFour && variant != "goldbox")
                                     channelNameLength = base64CharCodeToInt[compressed.charCodeAt(charIndex++)];
                                 else
                                     channelNameLength = ((base64CharCodeToInt[compressed.charCodeAt(charIndex++)] << 6) + base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
@@ -6310,7 +6353,13 @@ li.select2-results__option[role=group] > strong:hover {
                         break;
                     case 86:
                         {
-                            this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator].feedbackEnvelope = clamp(0, Config.envelopes.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                            if ((beforeTwo && variant == "goldbox") || variant != "goldbox") {
+                                const pregoldToEnvelope = [0, 1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14, 16, 17, 18, 19, 20, 21, 23, 24, 25, 27, 28, 29, 32, 33, 34, 31, 11];
+                                this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator].feedbackEnvelope = pregoldToEnvelope[clamp(0, pregoldToEnvelope.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)])];
+                            }
+                            else {
+                                this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator].feedbackEnvelope = clamp(0, Config.envelopes.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                            }
                         }
                         break;
                     case 81:
@@ -6329,8 +6378,16 @@ li.select2-results__option[role=group] > strong:hover {
                         break;
                     case 69:
                         {
-                            for (let o = 0; o < Config.operatorCount; o++) {
-                                this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator].operators[o].envelope = clamp(0, Config.envelopes.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                            if ((beforeTwo && variant == "goldbox") || variant != "goldbox") {
+                                const pregoldToEnvelope = [0, 1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14, 16, 17, 18, 19, 20, 21, 23, 24, 25, 27, 28, 29, 32, 33, 34, 31, 11];
+                                for (let o = 0; o < Config.operatorCount; o++) {
+                                    this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator].operators[o].envelope = pregoldToEnvelope[clamp(0, pregoldToEnvelope.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)])];
+                                }
+                            }
+                            else {
+                                for (let o = 0; o < Config.operatorCount; o++) {
+                                    this.channels[instrumentChannelIterator].instruments[instrumentIndexIterator].operators[o].envelope = clamp(0, Config.envelopes.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
+                                }
                             }
                         }
                         break;
@@ -6645,7 +6702,7 @@ li.select2-results__option[role=group] > strong:hover {
                         break;
                     default:
                         {
-                            throw new Error("Unrecognized song tag code " + String.fromCharCode(command) + " at index " + (charIndex - 1));
+                            throw new Error("Unrecognized song tag code " + String.fromCharCode(command) + " at index " + (charIndex - 1) + " " + compressed.substring(charIndex - 20, charIndex));
                         }
                 }
             for (let channel = 0; channel < this.getChannelCount(); channel++) {
@@ -6712,7 +6769,7 @@ li.select2-results__option[role=group] > strong:hover {
             return {
                 "name": this.title,
                 "format": Song._format,
-                "version": Song._latestJummBoxVersion,
+                "version": Song._latestGoldBoxVersion,
                 "scale": Config.scales[this.scale].name,
                 "customScale": this.scaleCustom,
                 "key": Config.keys[this.key].name,
@@ -6991,7 +7048,9 @@ li.select2-results__option[role=group] > strong:hover {
     Song._latestBeepboxVersion = 8;
     Song._oldestJummBoxVersion = 1;
     Song._latestJummBoxVersion = 4;
-    Song._variant = 0x6A;
+    Song._oldestGoldBoxVersion = 1;
+    Song._latestGoldBoxVersion = 2;
+    Song._variant = 0x67;
     class Tone {
         constructor() {
             this.pitches = [0, 0, 0, 0];
@@ -8471,12 +8530,16 @@ li.select2-results__option[role=group] > strong:hover {
                     temp = 1.0 / (1.0 + time * (envelope.speed - (temp / (1.5 / envelope.speed))));
                     temp = temp > 0.0 ? temp : 0.0;
                     return temp;
-                case 10:
-                    return time < 8 / envelope.speed ? 1.0 : 0.0;
-                case 11:
+                case 11: {
                     let lin = (1.0 - (time / (16 / envelope.speed)));
                     lin = lin > 0.0 ? lin : 0.0;
                     return lin;
+                }
+                case 12: {
+                    let lin = (time / (16 / envelope.speed));
+                    lin = lin < 1.0 ? lin : 1.0;
+                    return lin;
+                }
                 default: throw new Error("Unrecognized operator envelope type.");
             }
         }
@@ -21631,7 +21694,7 @@ const operator#Scaled   = operator#OutputMult * operator#Output;
                 const envelopeSelect = buildOptions(select$7({ style: "width: 100%;", title: "Envelope" }), Config.envelopes.map(envelope => envelope.name));
                 const waveformSelect = buildOptions(select$7({ style: "width: 100%;", title: "Waveform" }), Config.operatorWaves.map(wave => wave.name));
                 const dropdown = button$d({ style: "margin-left:0em; height:1.5em; width: 10px; padding: 0px; font-size: 8px;", onclick: () => this._toggleDropdownMenu(4, i) }, "▼");
-                const dropdownRow = div$d({ class: "selectRow" }, span$4({ class: "tip", style: "margin-left:10px;", onclick: () => this._openPrompt("operatorWaveform") }, "Wave:"), div$d({ class: "selectContainer", style: "width: 5em; margin-left: .3em;" }, waveformSelect));
+                const dropdownRow = div$d({ class: "selectRow" }, span$4({ class: "tip", style: "margin-left:10px;", onclick: () => this._openPrompt("operatorWaveform") }, "Wave:"), div$d({ class: "selectContainer", style: "width: 6em; margin-left: .3em;" }, waveformSelect));
                 const DropdownGroup = div$d({ class: "operatorRow" }, dropdownRow);
                 const row = div$d({ class: "operatorRow" }, operatorNumber, dropdown, div$d({ class: "selectContainer", style: "width: 3em; margin-right: .3em;" }, frequencySelect), amplitudeSlider.container, div$d({ class: "selectContainer", style: "width: 5em; margin-left: .3em;" }, envelopeSelect));
                 this._phaseModGroup.appendChild(row);
