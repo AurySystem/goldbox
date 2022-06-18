@@ -6387,7 +6387,7 @@ var beepbox = (function (exports) {
                     else if (this.type == 0) {
                         this.chord = Config.chords.dictionary["arpeggio"].index;
                     }
-                    else if (this.type == 1) {
+                    else if (this.type == 1 || this.type == 10) {
                         this.chord = Config.chords.dictionary["custom interval"].index;
                     }
                     else {
@@ -6561,13 +6561,21 @@ var beepbox = (function (exports) {
                     this.algorithm6Op = Config.algorithms6Op.findIndex(algorithm6Op => algorithm6Op.name == instrumentObject["algorithm"]);
                     if (this.algorithm6Op == -1)
                         this.algorithm6Op = 1;
-                    if (this.algorithm6Op == 0)
+                    if (this.algorithm6Op == 0) {
                         this.customAlgorithm.set(instrumentObject["customAlgorithm"]["carrierCount"], instrumentObject["customAlgorithm"]["mods"]);
+                    }
+                    else {
+                        this.customAlgorithm.fromPreset(this.algorithm6Op);
+                    }
                     this.feedbackType6Op = Config.feedbacks6Op.findIndex(feedback6Op => feedback6Op.name == instrumentObject["feedbackType"]);
                     if (this.feedbackType6Op == -1)
                         this.feedbackType6Op = 1;
-                    if (this.feedbackType6Op == 0)
+                    if (this.feedbackType6Op == 0) {
                         this.customFeedbackType.set(instrumentObject["customFeedback"]["mods"]);
+                    }
+                    else {
+                        this.customFeedbackType.fromPreset(this.feedbackType6Op);
+                    }
                 }
                 if (instrumentObject["feedbackAmplitude"] != undefined) {
                     this.feedbackAmplitude = clamp(0, Config.operatorAmplitudeMax + 1, instrumentObject["feedbackAmplitude"] | 0);
@@ -6575,7 +6583,7 @@ var beepbox = (function (exports) {
                 else {
                     this.feedbackAmplitude = 0;
                 }
-                for (let j = 0; j < Config.operatorCount; j++) {
+                for (let j = 0; j < Config.operatorCount + (this.type == 10 ? 2 : 0); j++) {
                     const operator = this.operators[j];
                     let operatorObject = undefined;
                     if (instrumentObject["operators"] != undefined)
