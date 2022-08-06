@@ -10580,7 +10580,7 @@ li.select2-results__option[role=group] > strong:hover {
                                         instrument.effects |= 1 << 9;
                                     }
                                     if (vibrato == Config.vibratos.length) {
-                                        instrument.vibratoDepth = clamp(0, Config.modulators.dictionary["vibrato depth"].maxRawVol + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) / 25;
+                                        instrument.vibratoDepth = clamp(0, Config.modulators.dictionary["vibrato depth"].maxRawVol + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) / 50;
                                         instrument.vibratoSpeed = clamp(0, Config.modulators.dictionary["vibrato speed"].maxRawVol + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                         instrument.vibratoDelay = clamp(0, Config.modulators.dictionary["vibrato delay"].maxRawVol + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) / 2;
                                         instrument.vibratoType = clamp(0, Config.vibratoTypes.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
@@ -14957,7 +14957,7 @@ li.select2-results__option[role=group] > strong:hover {
                 let arpeggioInterval = 0;
                 const arpeggiates = chord.arpeggiates;
                 if (tone.pitchCount > 1 && arpeggiates) {
-                    const arpeggio = Math.floor((this.tick + this.part * Config.ticksPerPart) / Config.ticksPerArpeggio);
+                    const arpeggio = Math.floor(instrument.arpTime / Config.ticksPerArpeggio);
                     arpeggioInterval = tone.pitches[getArpeggioPitchIndex(tone.pitchCount, instrument.fastTwoNoteArp, arpeggio)] - tone.pitches[0];
                 }
                 const carrierCount = (instrument.type == 10 ? instrument.customAlgorithm.carrierCount : Config.algorithms[instrument.algorithm].carrierCount);
@@ -15107,7 +15107,7 @@ li.select2-results__option[role=group] > strong:hover {
                     let useSustainEnd = instrument.stringSustain;
                     if (this.isModActive(Config.modulators.dictionary["sustain"].index, channelIndex, tone.instrumentIndex)) {
                         useSustainStart = this.getModValue(Config.modulators.dictionary["sustain"].index, channelIndex, tone.instrumentIndex, false);
-                        useSustainEnd = this.getModValue(Config.modulators.dictionary["sustain"].index, channelIndex, tone.instrumentIndex, false);
+                        useSustainEnd = this.getModValue(Config.modulators.dictionary["sustain"].index, channelIndex, tone.instrumentIndex, true);
                     }
                     tone.stringSustainStart = useSustainStart;
                     tone.stringSustainEnd = useSustainEnd;
@@ -15150,10 +15150,10 @@ li.select2-results__option[role=group] > strong:hover {
                     }
                     else {
                         const sustainEnvelopeStart = tone.envelopeComputer.envelopeStarts[3];
-                        stringDecayStart = 1.0 - Math.min(1.0, sustainEnvelopeStart * instrument.stringSustain / (Config.stringSustainRange - 1));
+                        stringDecayStart = 1.0 - Math.min(1.0, sustainEnvelopeStart * tone.stringSustainStart / (Config.stringSustainRange - 1));
                     }
                     const sustainEnvelopeEnd = tone.envelopeComputer.envelopeEnds[3];
-                    let stringDecayEnd = 1.0 - Math.min(1.0, sustainEnvelopeEnd * instrument.stringSustain / (Config.stringSustainRange - 1));
+                    let stringDecayEnd = 1.0 - Math.min(1.0, sustainEnvelopeEnd * tone.stringSustainEnd / (Config.stringSustainRange - 1));
                     tone.prevStringDecay = stringDecayEnd;
                     const unison = Config.unisons[instrument.unison];
                     for (let i = tone.pickedStrings.length; i < unison.voices; i++) {

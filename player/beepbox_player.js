@@ -8734,7 +8734,7 @@ var beepbox = (function (exports) {
                                         instrument.effects |= 1 << 9;
                                     }
                                     if (vibrato == Config.vibratos.length) {
-                                        instrument.vibratoDepth = clamp(0, Config.modulators.dictionary["vibrato depth"].maxRawVol + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) / 25;
+                                        instrument.vibratoDepth = clamp(0, Config.modulators.dictionary["vibrato depth"].maxRawVol + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) / 50;
                                         instrument.vibratoSpeed = clamp(0, Config.modulators.dictionary["vibrato speed"].maxRawVol + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
                                         instrument.vibratoDelay = clamp(0, Config.modulators.dictionary["vibrato delay"].maxRawVol + 1, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]) / 2;
                                         instrument.vibratoType = clamp(0, Config.vibratoTypes.length, base64CharCodeToInt[compressed.charCodeAt(charIndex++)]);
@@ -13111,7 +13111,7 @@ var beepbox = (function (exports) {
                 let arpeggioInterval = 0;
                 const arpeggiates = chord.arpeggiates;
                 if (tone.pitchCount > 1 && arpeggiates) {
-                    const arpeggio = Math.floor((this.tick + this.part * Config.ticksPerPart) / Config.ticksPerArpeggio);
+                    const arpeggio = Math.floor(instrument.arpTime / Config.ticksPerArpeggio);
                     arpeggioInterval = tone.pitches[getArpeggioPitchIndex(tone.pitchCount, instrument.fastTwoNoteArp, arpeggio)] - tone.pitches[0];
                 }
                 const carrierCount = (instrument.type == 10 ? instrument.customAlgorithm.carrierCount : Config.algorithms[instrument.algorithm].carrierCount);
@@ -13261,7 +13261,7 @@ var beepbox = (function (exports) {
                     let useSustainEnd = instrument.stringSustain;
                     if (this.isModActive(Config.modulators.dictionary["sustain"].index, channelIndex, tone.instrumentIndex)) {
                         useSustainStart = this.getModValue(Config.modulators.dictionary["sustain"].index, channelIndex, tone.instrumentIndex, false);
-                        useSustainEnd = this.getModValue(Config.modulators.dictionary["sustain"].index, channelIndex, tone.instrumentIndex, false);
+                        useSustainEnd = this.getModValue(Config.modulators.dictionary["sustain"].index, channelIndex, tone.instrumentIndex, true);
                     }
                     tone.stringSustainStart = useSustainStart;
                     tone.stringSustainEnd = useSustainEnd;
@@ -13304,10 +13304,10 @@ var beepbox = (function (exports) {
                     }
                     else {
                         const sustainEnvelopeStart = tone.envelopeComputer.envelopeStarts[3];
-                        stringDecayStart = 1.0 - Math.min(1.0, sustainEnvelopeStart * instrument.stringSustain / (Config.stringSustainRange - 1));
+                        stringDecayStart = 1.0 - Math.min(1.0, sustainEnvelopeStart * tone.stringSustainStart / (Config.stringSustainRange - 1));
                     }
                     const sustainEnvelopeEnd = tone.envelopeComputer.envelopeEnds[3];
-                    let stringDecayEnd = 1.0 - Math.min(1.0, sustainEnvelopeEnd * instrument.stringSustain / (Config.stringSustainRange - 1));
+                    let stringDecayEnd = 1.0 - Math.min(1.0, sustainEnvelopeEnd * tone.stringSustainEnd / (Config.stringSustainRange - 1));
                     tone.prevStringDecay = stringDecayEnd;
                     const unison = Config.unisons[instrument.unison];
                     for (let i = tone.pickedStrings.length; i < unison.voices; i++) {
@@ -14805,40 +14805,8 @@ var beepbox = (function (exports) {
 				const operator#Scaled   = operator#OutputMult * operator#Output;
 		`).split("\n");
 
-    class oscilascopeCanvas {
-        constructor(canvas, scale = 1) {
-            this.canvas = canvas;
-            this.scale = scale;
-            this._EventUpdateCanvas = function (directlinkL, directlinkR) {
-                if (directlinkR) {
-                    var ctx = canvas.getContext("2d");
-                    ctx.fillStyle = ColorConfig.getComputed("--editor-background");
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    ctx.fillStyle = ColorConfig.getComputed("--primary-text");
-                    for (let i = directlinkL.length - 1; i >= directlinkL.length - 1 - (canvas.width / scale); i--) {
-                        let x = i - (directlinkL.length - 1) + (canvas.width / scale);
-                        let yl = (directlinkL[i] * (canvas.height / scale / 2) + (canvas.height / scale / 2));
-                        ctx.fillRect((x - 1) * scale, (yl - 1) * scale, 1 * scale, 1.5 * scale);
-                        if (x == 0)
-                            break;
-                    }
-                    ctx.fillStyle = ColorConfig.getComputed("--text-selection");
-                    for (let i = directlinkR.length - 1; i >= directlinkR.length - 1 - (canvas.width / scale); i--) {
-                        let x = i - (directlinkR.length - 1) + (canvas.width / scale);
-                        let yr = (directlinkR[i] * (canvas.height / scale / 2) + (canvas.height / scale / 2));
-                        ctx.fillRect((x - 1) * scale, (yr - 1) * scale, 1 * scale, 1.5 * scale);
-                        if (x == 0)
-                            break;
-                    }
-                }
-            };
-            events.listen("oscillascopeUpdate", this._EventUpdateCanvas);
-        }
-    }
-
-    const { a, button, div, h1, input, canvas } = HTML;
+    const { a, button, div, h1, input, } = HTML;
     const { svg, circle, rect, path } = SVG;
-    const isMobile$1 = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|android|ipad|playbook|silk/i.test(navigator.userAgent);
     document.head.appendChild(HTML.style({ type: "text/css" }, `
 	body {
 		color: ${ColorConfig.primaryText};
@@ -14987,7 +14955,6 @@ var beepbox = (function (exports) {
     let outVolumeHistoricTimer = 0;
     let outVolumeHistoricCap = 0;
     const synth = new Synth();
-    const oscilascope = new oscilascopeCanvas(canvas({ width: isMobile$1 ? 144 : 288, height: isMobile$1 ? 32 : 64, style: "border:2px solid " + ColorConfig.uiWidgetBackground, id: "oscilascopeAll" }), isMobile$1 ? 1 : 2);
     let titleText = h1({ style: "flex-grow: 1; margin: 0 1px; margin-left: 10px; overflow: hidden;" }, "");
     let editLink = a({ target: "_top", style: "margin: 0 4px;" }, "✎ Edit");
     let copyLink = a({ href: "javascript:void(0)", style: "margin: 0 4px;" }, "⎘ Copy URL");
@@ -15016,7 +14983,7 @@ var beepbox = (function (exports) {
     const defs = SVG.defs({}, gradient);
     const volumeBarContainer = SVG.svg({ style: `touch-action: none; overflow: hidden; margin: auto;`, width: "160px", height: "10px", preserveAspectRatio: "none" }, defs, outVolumeBarBg, outVolumeBar, outVolumeCap);
     document.body.appendChild(visualizationContainer);
-    document.body.appendChild(div({ style: `flex-shrink: 0; height: 20vh; min-height: 22px; max-height: 70px; display: flex; align-items: center;` }, playButtonContainer, loopButton, volumeIcon, volumeSlider, zoomButton, volumeBarContainer, oscilascope.canvas, titleText, editLink, copyLink, shareLink, fullscreenLink));
+    document.body.appendChild(div({ style: `flex-shrink: 0; height: 20vh; min-height: 22px; max-height: 70px; display: flex; align-items: center;` }, playButtonContainer, loopButton, volumeIcon, volumeSlider, zoomButton, volumeBarContainer, titleText, editLink, copyLink, shareLink, fullscreenLink));
     function setLocalStorage(key, value) {
         try {
             localStorage.setItem(key, value);
