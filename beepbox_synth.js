@@ -461,14 +461,14 @@ var beepbox = (function (exports) {
         { name: "pulseWidth", computeIndex: 2, displayName: "pulse width", interleave: false, isFilter: false, maxCount: 1, effect: null, compatibleInstruments: [6] },
         { name: "stringSustain", computeIndex: 3, displayName: "sustain", interleave: false, isFilter: false, maxCount: 1, effect: null, compatibleInstruments: [7] },
         { name: "unison", computeIndex: 4, displayName: "unison", interleave: false, isFilter: false, maxCount: 1, effect: null, compatibleInstruments: [0, 5, 7] },
-        { name: "operatorFrequency", computeIndex: 5, displayName: "fm# freq", interleave: true, isFilter: false, maxCount: Config.operatorCount, effect: null, compatibleInstruments: [1] },
-        { name: "operatorAmplitude", computeIndex: 9, displayName: "fm# volume", interleave: false, isFilter: false, maxCount: Config.operatorCount, effect: null, compatibleInstruments: [1] },
-        { name: "feedbackAmplitude", computeIndex: 13, displayName: "fm feedback", interleave: false, isFilter: false, maxCount: 1, effect: null, compatibleInstruments: [1] },
-        { name: "pitchShift", computeIndex: 14, displayName: "pitch shift", interleave: false, isFilter: false, maxCount: 1, effect: 7, compatibleInstruments: null },
-        { name: "detune", computeIndex: 15, displayName: "detune", interleave: false, isFilter: false, maxCount: 1, effect: 8, compatibleInstruments: null },
-        { name: "vibratoDepth", computeIndex: 16, displayName: "vibrato range", interleave: false, isFilter: false, maxCount: 1, effect: 9, compatibleInstruments: null },
+        { name: "operatorFrequency", computeIndex: 5, displayName: "fm# freq", interleave: true, isFilter: false, maxCount: Config.operatorCount + 2, effect: null, compatibleInstruments: [1, 10] },
+        { name: "operatorAmplitude", computeIndex: 11, displayName: "fm# volume", interleave: false, isFilter: false, maxCount: Config.operatorCount + 2, effect: null, compatibleInstruments: [1, 10] },
+        { name: "feedbackAmplitude", computeIndex: 17, displayName: "fm feedback", interleave: false, isFilter: false, maxCount: 1, effect: null, compatibleInstruments: [1, 10] },
+        { name: "pitchShift", computeIndex: 18, displayName: "pitch shift", interleave: false, isFilter: false, maxCount: 1, effect: 7, compatibleInstruments: null },
+        { name: "detune", computeIndex: 19, displayName: "detune", interleave: false, isFilter: false, maxCount: 1, effect: 8, compatibleInstruments: null },
+        { name: "vibratoDepth", computeIndex: 20, displayName: "vibrato range", interleave: false, isFilter: false, maxCount: 1, effect: 9, compatibleInstruments: null },
         { name: "noteFilterAllFreqs", computeIndex: 1, displayName: "n. filter freqs", interleave: false, isFilter: true, maxCount: 1, effect: 5, compatibleInstruments: null },
-        { name: "noteFilterFreq", computeIndex: 17, displayName: "n. filter # freq", interleave: false, isFilter: true, maxCount: Config.filterMaxPoints, effect: 5, compatibleInstruments: null },
+        { name: "noteFilterFreq", computeIndex: 21, displayName: "n. filter # freq", interleave: false, isFilter: true, maxCount: Config.filterMaxPoints, effect: 5, compatibleInstruments: null },
     ]);
     Config.operatorWaves = toNameMap([
         { name: "sine", samples: Config.sineWave },
@@ -6455,7 +6455,7 @@ var beepbox = (function (exports) {
             this._modifiedEnvelopeIndices = [];
             this._modifiedEnvelopeCount = 0;
             this.lowpassCutoffDecayVolumeCompensation = 1.0;
-            const length = 33;
+            const length = 37;
             for (let i = 0; i < length; i++) {
                 this.envelopeStarts[i] = 1.0;
                 this.envelopeEnds[i] = 1.0;
@@ -9193,14 +9193,14 @@ var beepbox = (function (exports) {
                     pitchShiftScalarStart = (this.getModValue(Config.modulators.dictionary["pitch shift"].index, channelIndex, tone.instrumentIndex, false)) / (Config.pitchShiftCenter);
                     pitchShiftScalarEnd = (this.getModValue(Config.modulators.dictionary["pitch shift"].index, channelIndex, tone.instrumentIndex, true)) / (Config.pitchShiftCenter);
                 }
-                const envelopeStart = envelopeStarts[14];
-                const envelopeEnd = envelopeEnds[14];
+                const envelopeStart = envelopeStarts[18];
+                const envelopeEnd = envelopeEnds[18];
                 intervalStart += pitchShift * envelopeStart * pitchShiftScalarStart;
                 intervalEnd += pitchShift * envelopeEnd * pitchShiftScalarEnd;
             }
             if (effectsIncludeDetune(instrument.effects) || this.isModActive(Config.modulators.dictionary["song detune"].index, channelIndex, tone.instrumentIndex)) {
-                const envelopeStart = envelopeStarts[15];
-                const envelopeEnd = envelopeEnds[15];
+                const envelopeStart = envelopeStarts[19];
+                const envelopeEnd = envelopeEnds[19];
                 let modDetuneStart = instrument.detune;
                 let modDetuneEnd = instrument.detune;
                 if (this.isModActive(Config.modulators.dictionary["detune"].index, channelIndex, tone.instrumentIndex)) {
@@ -9245,7 +9245,7 @@ var beepbox = (function (exports) {
                 }
                 else {
                     let lfoStart = Synth.getLFOAmplitude(instrument, secondsPerPart * instrument.LFOtime);
-                    const vibratoDepthEnvelopeStart = envelopeStarts[16];
+                    const vibratoDepthEnvelopeStart = envelopeStarts[20];
                     vibratoStart = vibratoAmplitudeStart * lfoStart * vibratoDepthEnvelopeStart;
                     if (delayTicks > 0.0) {
                         const ticksUntilVibratoStart = delayTicks - envelopeComputer.noteTicksStart;
@@ -9253,7 +9253,7 @@ var beepbox = (function (exports) {
                     }
                 }
                 let lfoEnd = Synth.getLFOAmplitude(instrument, secondsPerPart * instrument.nextLFOtime);
-                const vibratoDepthEnvelopeEnd = envelopeEnds[16];
+                const vibratoDepthEnvelopeEnd = envelopeEnds[20];
                 if (instrument.type != 9) {
                     let vibratoEnd = vibratoAmplitudeEnd * lfoEnd * vibratoDepthEnvelopeEnd;
                     if (delayTicks > 0.0) {
@@ -9286,10 +9286,10 @@ var beepbox = (function (exports) {
                 const noteAllFreqsEnvelopeStart = envelopeStarts[1];
                 const noteAllFreqsEnvelopeEnd = envelopeEnds[1];
                 if (instrument.noteFilterType) {
-                    const noteFreqEnvelopeStart = envelopeStarts[17];
-                    const noteFreqEnvelopeEnd = envelopeEnds[17];
-                    const notePeakEnvelopeStart = envelopeStarts[25];
-                    const notePeakEnvelopeEnd = envelopeEnds[25];
+                    const noteFreqEnvelopeStart = envelopeStarts[21];
+                    const noteFreqEnvelopeEnd = envelopeEnds[21];
+                    const notePeakEnvelopeStart = envelopeStarts[29];
+                    const notePeakEnvelopeEnd = envelopeEnds[29];
                     startPoint.toCoefficients(Synth.tempFilterStartCoefficients, this.samplesPerSecond, noteAllFreqsEnvelopeStart * noteFreqEnvelopeStart, notePeakEnvelopeStart);
                     endPoint.toCoefficients(Synth.tempFilterEndCoefficients, this.samplesPerSecond, noteAllFreqsEnvelopeEnd * noteFreqEnvelopeEnd, notePeakEnvelopeEnd);
                     if (tone.noteFilters.length < 1)
@@ -9301,10 +9301,10 @@ var beepbox = (function (exports) {
                 else {
                     const noteFilterSettings = (instrument.tmpNoteFilterStart != null) ? instrument.tmpNoteFilterStart : instrument.noteFilter;
                     for (let i = 0; i < noteFilterSettings.controlPointCount; i++) {
-                        const noteFreqEnvelopeStart = envelopeStarts[17 + i];
-                        const noteFreqEnvelopeEnd = envelopeEnds[17 + i];
-                        const notePeakEnvelopeStart = envelopeStarts[25 + i];
-                        const notePeakEnvelopeEnd = envelopeEnds[25 + i];
+                        const noteFreqEnvelopeStart = envelopeStarts[21 + i];
+                        const noteFreqEnvelopeEnd = envelopeEnds[21 + i];
+                        const notePeakEnvelopeStart = envelopeStarts[29 + i];
+                        const notePeakEnvelopeEnd = envelopeEnds[29 + i];
                         let startPoint = noteFilterSettings.controlPoints[i];
                         const endPoint = (instrument.tmpNoteFilterEnd != null && instrument.tmpNoteFilterEnd.controlPoints[i] != null) ? instrument.tmpNoteFilterEnd.controlPoints[i] : noteFilterSettings.controlPoints[i];
                         if (startPoint.type != endPoint.type) {
@@ -9428,8 +9428,8 @@ var beepbox = (function (exports) {
                         expressionEnd *= Config.sineWaveLength * 1.5;
                         sineExpressionBoost *= 1.0 - Math.min(1.0, instrument.operators[i].amplitude / 15);
                     }
-                    expressionStart *= envelopeStarts[9 + i];
-                    expressionEnd *= envelopeEnds[9 + i];
+                    expressionStart *= envelopeStarts[11 + i];
+                    expressionEnd *= envelopeEnds[11 + i];
                     if (this.isModActive(Config.modulators.dictionary["note volume"].index, channelIndex, tone.instrumentIndex)) {
                         const startVal = this.getModValue(Config.modulators.dictionary["note volume"].index, channelIndex, tone.instrumentIndex, false);
                         const endVal = this.getModValue(Config.modulators.dictionary["note volume"].index, channelIndex, tone.instrumentIndex, true);
@@ -9454,8 +9454,8 @@ var beepbox = (function (exports) {
                 }
                 let feedbackAmplitudeStart = Config.sineWaveLength * 0.3 * useFeedbackAmplitudeStart / 15.0;
                 const feedbackAmplitudeEnd = Config.sineWaveLength * 0.3 * useFeedbackAmplitudeEnd / 15.0;
-                let feedbackStart = feedbackAmplitudeStart * envelopeStarts[13];
-                let feedbackEnd = feedbackAmplitudeEnd * envelopeEnds[13];
+                let feedbackStart = feedbackAmplitudeStart * envelopeStarts[17];
+                let feedbackEnd = feedbackAmplitudeEnd * envelopeEnds[17];
                 tone.feedbackMult = feedbackStart;
                 tone.feedbackDelta = (feedbackEnd - feedbackStart) / roundedSamplesPerTick;
             }

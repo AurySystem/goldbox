@@ -461,14 +461,14 @@ var beepbox = (function (exports) {
         { name: "pulseWidth", computeIndex: 2, displayName: "pulse width", interleave: false, isFilter: false, maxCount: 1, effect: null, compatibleInstruments: [6] },
         { name: "stringSustain", computeIndex: 3, displayName: "sustain", interleave: false, isFilter: false, maxCount: 1, effect: null, compatibleInstruments: [7] },
         { name: "unison", computeIndex: 4, displayName: "unison", interleave: false, isFilter: false, maxCount: 1, effect: null, compatibleInstruments: [0, 5, 7] },
-        { name: "operatorFrequency", computeIndex: 5, displayName: "fm# freq", interleave: true, isFilter: false, maxCount: Config.operatorCount, effect: null, compatibleInstruments: [1] },
-        { name: "operatorAmplitude", computeIndex: 9, displayName: "fm# volume", interleave: false, isFilter: false, maxCount: Config.operatorCount, effect: null, compatibleInstruments: [1] },
-        { name: "feedbackAmplitude", computeIndex: 13, displayName: "fm feedback", interleave: false, isFilter: false, maxCount: 1, effect: null, compatibleInstruments: [1] },
-        { name: "pitchShift", computeIndex: 14, displayName: "pitch shift", interleave: false, isFilter: false, maxCount: 1, effect: 7, compatibleInstruments: null },
-        { name: "detune", computeIndex: 15, displayName: "detune", interleave: false, isFilter: false, maxCount: 1, effect: 8, compatibleInstruments: null },
-        { name: "vibratoDepth", computeIndex: 16, displayName: "vibrato range", interleave: false, isFilter: false, maxCount: 1, effect: 9, compatibleInstruments: null },
+        { name: "operatorFrequency", computeIndex: 5, displayName: "fm# freq", interleave: true, isFilter: false, maxCount: Config.operatorCount + 2, effect: null, compatibleInstruments: [1, 10] },
+        { name: "operatorAmplitude", computeIndex: 11, displayName: "fm# volume", interleave: false, isFilter: false, maxCount: Config.operatorCount + 2, effect: null, compatibleInstruments: [1, 10] },
+        { name: "feedbackAmplitude", computeIndex: 17, displayName: "fm feedback", interleave: false, isFilter: false, maxCount: 1, effect: null, compatibleInstruments: [1, 10] },
+        { name: "pitchShift", computeIndex: 18, displayName: "pitch shift", interleave: false, isFilter: false, maxCount: 1, effect: 7, compatibleInstruments: null },
+        { name: "detune", computeIndex: 19, displayName: "detune", interleave: false, isFilter: false, maxCount: 1, effect: 8, compatibleInstruments: null },
+        { name: "vibratoDepth", computeIndex: 20, displayName: "vibrato range", interleave: false, isFilter: false, maxCount: 1, effect: 9, compatibleInstruments: null },
         { name: "noteFilterAllFreqs", computeIndex: 1, displayName: "n. filter freqs", interleave: false, isFilter: true, maxCount: 1, effect: 5, compatibleInstruments: null },
-        { name: "noteFilterFreq", computeIndex: 17, displayName: "n. filter # freq", interleave: false, isFilter: true, maxCount: Config.filterMaxPoints, effect: 5, compatibleInstruments: null },
+        { name: "noteFilterFreq", computeIndex: 21, displayName: "n. filter # freq", interleave: false, isFilter: true, maxCount: Config.filterMaxPoints, effect: 5, compatibleInstruments: null },
     ]);
     Config.operatorWaves = toNameMap([
         { name: "sine", samples: Config.sineWave },
@@ -10207,7 +10207,7 @@ var beepbox = (function (exports) {
             this._modifiedEnvelopeIndices = [];
             this._modifiedEnvelopeCount = 0;
             this.lowpassCutoffDecayVolumeCompensation = 1.0;
-            const length = 33;
+            const length = 37;
             for (let i = 0; i < length; i++) {
                 this.envelopeStarts[i] = 1.0;
                 this.envelopeEnds[i] = 1.0;
@@ -12945,14 +12945,14 @@ var beepbox = (function (exports) {
                     pitchShiftScalarStart = (this.getModValue(Config.modulators.dictionary["pitch shift"].index, channelIndex, tone.instrumentIndex, false)) / (Config.pitchShiftCenter);
                     pitchShiftScalarEnd = (this.getModValue(Config.modulators.dictionary["pitch shift"].index, channelIndex, tone.instrumentIndex, true)) / (Config.pitchShiftCenter);
                 }
-                const envelopeStart = envelopeStarts[14];
-                const envelopeEnd = envelopeEnds[14];
+                const envelopeStart = envelopeStarts[18];
+                const envelopeEnd = envelopeEnds[18];
                 intervalStart += pitchShift * envelopeStart * pitchShiftScalarStart;
                 intervalEnd += pitchShift * envelopeEnd * pitchShiftScalarEnd;
             }
             if (effectsIncludeDetune(instrument.effects) || this.isModActive(Config.modulators.dictionary["song detune"].index, channelIndex, tone.instrumentIndex)) {
-                const envelopeStart = envelopeStarts[15];
-                const envelopeEnd = envelopeEnds[15];
+                const envelopeStart = envelopeStarts[19];
+                const envelopeEnd = envelopeEnds[19];
                 let modDetuneStart = instrument.detune;
                 let modDetuneEnd = instrument.detune;
                 if (this.isModActive(Config.modulators.dictionary["detune"].index, channelIndex, tone.instrumentIndex)) {
@@ -12997,7 +12997,7 @@ var beepbox = (function (exports) {
                 }
                 else {
                     let lfoStart = Synth.getLFOAmplitude(instrument, secondsPerPart * instrument.LFOtime);
-                    const vibratoDepthEnvelopeStart = envelopeStarts[16];
+                    const vibratoDepthEnvelopeStart = envelopeStarts[20];
                     vibratoStart = vibratoAmplitudeStart * lfoStart * vibratoDepthEnvelopeStart;
                     if (delayTicks > 0.0) {
                         const ticksUntilVibratoStart = delayTicks - envelopeComputer.noteTicksStart;
@@ -13005,7 +13005,7 @@ var beepbox = (function (exports) {
                     }
                 }
                 let lfoEnd = Synth.getLFOAmplitude(instrument, secondsPerPart * instrument.nextLFOtime);
-                const vibratoDepthEnvelopeEnd = envelopeEnds[16];
+                const vibratoDepthEnvelopeEnd = envelopeEnds[20];
                 if (instrument.type != 9) {
                     let vibratoEnd = vibratoAmplitudeEnd * lfoEnd * vibratoDepthEnvelopeEnd;
                     if (delayTicks > 0.0) {
@@ -13038,10 +13038,10 @@ var beepbox = (function (exports) {
                 const noteAllFreqsEnvelopeStart = envelopeStarts[1];
                 const noteAllFreqsEnvelopeEnd = envelopeEnds[1];
                 if (instrument.noteFilterType) {
-                    const noteFreqEnvelopeStart = envelopeStarts[17];
-                    const noteFreqEnvelopeEnd = envelopeEnds[17];
-                    const notePeakEnvelopeStart = envelopeStarts[25];
-                    const notePeakEnvelopeEnd = envelopeEnds[25];
+                    const noteFreqEnvelopeStart = envelopeStarts[21];
+                    const noteFreqEnvelopeEnd = envelopeEnds[21];
+                    const notePeakEnvelopeStart = envelopeStarts[29];
+                    const notePeakEnvelopeEnd = envelopeEnds[29];
                     startPoint.toCoefficients(Synth.tempFilterStartCoefficients, this.samplesPerSecond, noteAllFreqsEnvelopeStart * noteFreqEnvelopeStart, notePeakEnvelopeStart);
                     endPoint.toCoefficients(Synth.tempFilterEndCoefficients, this.samplesPerSecond, noteAllFreqsEnvelopeEnd * noteFreqEnvelopeEnd, notePeakEnvelopeEnd);
                     if (tone.noteFilters.length < 1)
@@ -13053,10 +13053,10 @@ var beepbox = (function (exports) {
                 else {
                     const noteFilterSettings = (instrument.tmpNoteFilterStart != null) ? instrument.tmpNoteFilterStart : instrument.noteFilter;
                     for (let i = 0; i < noteFilterSettings.controlPointCount; i++) {
-                        const noteFreqEnvelopeStart = envelopeStarts[17 + i];
-                        const noteFreqEnvelopeEnd = envelopeEnds[17 + i];
-                        const notePeakEnvelopeStart = envelopeStarts[25 + i];
-                        const notePeakEnvelopeEnd = envelopeEnds[25 + i];
+                        const noteFreqEnvelopeStart = envelopeStarts[21 + i];
+                        const noteFreqEnvelopeEnd = envelopeEnds[21 + i];
+                        const notePeakEnvelopeStart = envelopeStarts[29 + i];
+                        const notePeakEnvelopeEnd = envelopeEnds[29 + i];
                         let startPoint = noteFilterSettings.controlPoints[i];
                         const endPoint = (instrument.tmpNoteFilterEnd != null && instrument.tmpNoteFilterEnd.controlPoints[i] != null) ? instrument.tmpNoteFilterEnd.controlPoints[i] : noteFilterSettings.controlPoints[i];
                         if (startPoint.type != endPoint.type) {
@@ -13180,8 +13180,8 @@ var beepbox = (function (exports) {
                         expressionEnd *= Config.sineWaveLength * 1.5;
                         sineExpressionBoost *= 1.0 - Math.min(1.0, instrument.operators[i].amplitude / 15);
                     }
-                    expressionStart *= envelopeStarts[9 + i];
-                    expressionEnd *= envelopeEnds[9 + i];
+                    expressionStart *= envelopeStarts[11 + i];
+                    expressionEnd *= envelopeEnds[11 + i];
                     if (this.isModActive(Config.modulators.dictionary["note volume"].index, channelIndex, tone.instrumentIndex)) {
                         const startVal = this.getModValue(Config.modulators.dictionary["note volume"].index, channelIndex, tone.instrumentIndex, false);
                         const endVal = this.getModValue(Config.modulators.dictionary["note volume"].index, channelIndex, tone.instrumentIndex, true);
@@ -13206,8 +13206,8 @@ var beepbox = (function (exports) {
                 }
                 let feedbackAmplitudeStart = Config.sineWaveLength * 0.3 * useFeedbackAmplitudeStart / 15.0;
                 const feedbackAmplitudeEnd = Config.sineWaveLength * 0.3 * useFeedbackAmplitudeEnd / 15.0;
-                let feedbackStart = feedbackAmplitudeStart * envelopeStarts[13];
-                let feedbackEnd = feedbackAmplitudeEnd * envelopeEnds[13];
+                let feedbackStart = feedbackAmplitudeStart * envelopeStarts[17];
+                let feedbackEnd = feedbackAmplitudeEnd * envelopeEnds[17];
                 tone.feedbackMult = feedbackStart;
                 tone.feedbackDelta = (feedbackEnd - feedbackStart) / roundedSamplesPerTick;
             }
@@ -14805,8 +14805,40 @@ var beepbox = (function (exports) {
 				const operator#Scaled   = operator#OutputMult * operator#Output;
 		`).split("\n");
 
-    const { a, button, div, h1, input, } = HTML;
+    class oscilascopeCanvas {
+        constructor(canvas, scale = 1) {
+            this.canvas = canvas;
+            this.scale = scale;
+            this._EventUpdateCanvas = function (directlinkL, directlinkR) {
+                if (directlinkR) {
+                    var ctx = canvas.getContext("2d");
+                    ctx.fillStyle = ColorConfig.getComputed("--editor-background");
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = ColorConfig.getComputed("--primary-text");
+                    for (let i = directlinkL.length - 1; i >= directlinkL.length - 1 - (canvas.width / scale); i--) {
+                        let x = i - (directlinkL.length - 1) + (canvas.width / scale);
+                        let yl = (directlinkL[i] * (canvas.height / scale / 2) + (canvas.height / scale / 2));
+                        ctx.fillRect((x - 1) * scale, (yl - 1) * scale, 1 * scale, 1.5 * scale);
+                        if (x == 0)
+                            break;
+                    }
+                    ctx.fillStyle = ColorConfig.getComputed("--text-selection");
+                    for (let i = directlinkR.length - 1; i >= directlinkR.length - 1 - (canvas.width / scale); i--) {
+                        let x = i - (directlinkR.length - 1) + (canvas.width / scale);
+                        let yr = (directlinkR[i] * (canvas.height / scale / 2) + (canvas.height / scale / 2));
+                        ctx.fillRect((x - 1) * scale, (yr - 1) * scale, 1 * scale, 1.5 * scale);
+                        if (x == 0)
+                            break;
+                    }
+                }
+            };
+            events.listen("oscillascopeUpdate", this._EventUpdateCanvas);
+        }
+    }
+
+    const { a, button, div, h1, input, canvas } = HTML;
     const { svg, circle, rect, path } = SVG;
+    const isMobile$1 = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|android|ipad|playbook|silk/i.test(navigator.userAgent);
     document.head.appendChild(HTML.style({ type: "text/css" }, `
 	body {
 		color: ${ColorConfig.primaryText};
@@ -14945,7 +14977,8 @@ var beepbox = (function (exports) {
 		cursor: pointer;
 	}
 `));
-    ColorConfig.setTheme("jummbox classic");
+    let aaa = window.localStorage.getItem("colorTheme");
+    ColorConfig.setTheme(aaa === null ? "jummbox classic" : aaa);
     let prevHash = null;
     let id = ((Math.random() * 0xffffffff) >>> 0).toString(16);
     let pauseButtonDisplayed = false;
@@ -14955,6 +14988,7 @@ var beepbox = (function (exports) {
     let outVolumeHistoricTimer = 0;
     let outVolumeHistoricCap = 0;
     const synth = new Synth();
+    const oscilascope = new oscilascopeCanvas(canvas({ width: isMobile$1 ? 144 : 288, height: isMobile$1 ? 32 : 64, style: `border:2px solid ${ColorConfig.uiWidgetBackground}; overflow: hidden;`, id: "oscilascopeAll" }), isMobile$1 ? 1 : 2);
     let titleText = h1({ style: "flex-grow: 1; margin: 0 1px; margin-left: 10px; overflow: hidden;" }, "");
     let editLink = a({ target: "_top", style: "margin: 0 4px;" }, "✎ Edit");
     let copyLink = a({ href: "javascript:void(0)", style: "margin: 0 4px;" }, "⎘ Copy URL");
@@ -14982,8 +15016,9 @@ var beepbox = (function (exports) {
     const gradient = SVG.linearGradient({ id: "volumeGrad2", gradientUnits: "userSpaceOnUse" }, stop1, stop2, stop3);
     const defs = SVG.defs({}, gradient);
     const volumeBarContainer = SVG.svg({ style: `touch-action: none; overflow: hidden; margin: auto;`, width: "160px", height: "10px", preserveAspectRatio: "none" }, defs, outVolumeBarBg, outVolumeBar, outVolumeCap);
+    console.log(self.innerWidth);
     document.body.appendChild(visualizationContainer);
-    document.body.appendChild(div({ style: `flex-shrink: 0; height: 20vh; min-height: 22px; max-height: 70px; display: flex; align-items: center;` }, playButtonContainer, loopButton, volumeIcon, volumeSlider, zoomButton, volumeBarContainer, titleText, editLink, copyLink, shareLink, fullscreenLink));
+    document.body.appendChild(div({ style: `flex-shrink: 0; height: 20vh; min-height: 22px; max-height: 70px; display: flex; align-items: center;` }, playButtonContainer, loopButton, volumeIcon, volumeSlider, zoomButton, volumeBarContainer, oscilascope.canvas, titleText, editLink, copyLink, shareLink, fullscreenLink));
     function setLocalStorage(key, value) {
         try {
             localStorage.setItem(key, value);
